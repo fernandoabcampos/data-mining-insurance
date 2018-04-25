@@ -1,0 +1,85 @@
+---
+title: "PEC 4 - Agregación *(Clustering)*"
+author: "Fernando Antonio Barbeiro Campos - fbarbeiro@uoc.edu"
+
+date: '`r format(Sys.Date(),"%e de %B, %Y")`'
+output:
+  word_document:
+    toc: yes
+---
+ 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_libraries, include=FALSE}
+library(knitr)
+#\usepackage{mathtools}
+```
+
+```{r chunck1}
+# Loading the dataframe
+df <- read.csv2("seguros2.csv")
+head(df)
+summary(df)
+nrow(df)
+ncol(df)
+colnames(df)
+res <- sapply(df, class)
+kable(data.frame(variables=names(res),clase=as.vector(res)))
+```
+
+```{r chunck2}
+set.seed(20)
+k <- kmeans(df[, 2:3], 2, nstart = 20)
+k$cluster <- as.factor(k$cluster)
+
+library(cluster)
+clusplot(df, k$cluster, main = 'Cusplot')
+k
+```
+
+```{r chunck3}
+set.seed(10)
+k2 <- kmeans(df[, 2:4], 3, nstart = 1)
+k2$cluster <- as.factor(k2$cluster)
+k2
+clusplot(df, k2$cluster, main = 'Cusplot')
+```
+
+
+```{r chunck4}
+dfi <- read.csv("iris.csv")
+head(dfi)
+summary(dfi)
+nrow(dfi)
+ncol(dfi)
+colnames(dfi)
+res <- sapply(dfi, class)
+kable(data.frame(variables=names(res),clase=as.vector(res)))
+```
+
+```{r chunck5}
+set.seed(20)
+irisCluster <- kmeans(dfi[, 3:4], 3, nstart = 20)
+irisCluster
+table(irisCluster$cluster, dfi$Species)
+```
+<br />
+<br />
+<br />
+<br />
+a
+<br />
+b
+<br />
+c
+<br />
+```{r chunck6}
+#Sepal.Lenght and Sepal.Width en vez de Petal (Pasamos un grupo a más que existe a ver que ocurre)
+irisCluster2 <- kmeans(dfi[, 1:2], 4, nstart = 30)
+irisCluster2
+
+table(irisCluster2$cluster, dfi$Species)
+```
+
